@@ -1,8 +1,10 @@
 "use client"
 
-import { useState, useMemo, useEffect } from "react"
+import { useState, useMemo, useEffect, useRef } from "react"
 import { Textarea } from "@/components/ui/textarea"
-import { Slide, type SlideData } from "@/components/slide"
+import { Button } from "@/components/ui/button"
+import { Download, DownloadCloud } from "lucide-react"
+import { Slide, type SlideData, type SlideRef } from "@/components/slide"
 
 const defaultMarkdown = `# Slide 1
 ## ¿Por qué el Barkley Marathons no da medallas?
@@ -56,7 +58,9 @@ function parseMarkdownToSlides(markdown: string): SlideData[] {
 export default function SlideBuilderPage() {
   const [markdown, setMarkdown] = useState(defaultMarkdown)
   const [isLoading, setIsLoading] = useState(true)
+  const [isDownloadingAll, setIsDownloadingAll] = useState(false)
   const slides = useMemo(() => parseMarkdownToSlides(markdown), [markdown])
+  const slideRefs = useRef<(SlideRef | null)[]>([])
 
   useEffect(() => {
     // Try to load content from input.md file
@@ -78,6 +82,25 @@ export default function SlideBuilderPage() {
         setIsLoading(false)
       })
   }, [])
+
+  const handleDownloadAll = async () => {
+    setIsDownloadingAll(true)
+    try {
+      // Download slides sequentially to avoid browser limitations
+      for (let i = 0; i < slideRefs.current.length; i++) {
+        const slideRef = slideRefs.current[i]
+        if (slideRef) {
+          await slideRef.download()
+          // Small delay between downloads
+          await new Promise(resolve => setTimeout(resolve, 500))
+        }
+      }
+    } catch (error) {
+      console.error('Failed to download all slides:', error)
+    } finally {
+      setIsDownloadingAll(false)
+    }
+  }
 
   if (isLoading) {
     return (
@@ -117,12 +140,42 @@ export default function SlideBuilderPage() {
 
           {/* Preview Section */}
           <div className="space-y-6">
-            <h2 className="text-xl font-semibold text-gray-900">Generated Slides</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-gray-900">Generated Slides</h2>
+              {slides.length > 0 && (
+                <Button 
+                  onClick={handleDownloadAll} 
+                  disabled={isDownloadingAll}
+                  className="flex items-center gap-2"
+                >
+                  <DownloadCloud size={16} />
+                  {isDownloadingAll ? 'Downloading...' : `Download All (${slides.length})`}
+                </Button>
+              )}
+            </div>
             <div className="space-y-8 max-h-[800px] overflow-y-auto pr-4">
-              {slides.map((slide) => (
-                <div key={slide.slideNumber} className="w-[360px] aspect-[1080/1350] bg-white border rounded-lg shadow relative overflow-hidden flex items-center justify-center">
-                  <div style={{ width: '1080px', height: '1350px', position: 'absolute', top: 0, left: 0, transform: 'scale(0.333)', transformOrigin: 'top left' }}>
-                    <Slide slide={slide} />
+              {slides.map((slide, index) => (
+                <div key={slide.slideNumber} className="space-y-4">
+                  <div className="w-[360px] aspect-[1080/1350] bg-white border rounded-lg shadow relative overflow-hidden flex items-center justify-center">
+                    <div style={{ width: '1080px', height: '1350px', position: 'absolute', top: 0, left: 0, transform: 'scale(0.333)', transformOrigin: 'top left' }}>
+                      <Slide 
+                        ref={(el) => {
+                          slideRefs.current[index] = el
+                        }}
+                        slide={slide} 
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-center">
+                    <Button 
+                      onClick={() => slideRefs.current[index]?.download()}
+                      variant="outline"
+                      size="sm"
+                      className="flex items-center gap-2"
+                    >
+                      <Download size={14} />
+                      Download Slide {slide.slideNumber}
+                    </Button>
                   </div>
                 </div>
               ))}

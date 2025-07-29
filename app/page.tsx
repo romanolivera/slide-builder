@@ -6,16 +6,55 @@ import { Button } from "@/components/ui/button"
 import { Download, DownloadCloud } from "lucide-react"
 import { Slide, type SlideData, type SlideRef } from "@/components/slide"
 import { ImageUpload } from "@/components/image-upload"
+import { Settings } from "@/components/settings"
+import { Theme, getCurrentTheme, getDefaultTheme } from "@/lib/themes"
+import { Instructions } from "@/components/instructions"
+import { LanguageSwitcher } from "@/components/language-switcher"
+import { getTranslation } from "@/lib/translations"
 
-const defaultMarkdown = `# Slide 1
-## ¿Por qué el Barkley Marathons no da medallas?
-La carrera más brutal del mundo... sin premio.
+const defaultMarkdown = `## Si tu ego es frágil... no veas este carrusel
+Estos datos duelen más que ver tus fotos de hace 10 años.
+
 ---
-# Slide 2
-## ¿Qué es el Barkley?
-- Un ultramaratón de 5 vueltas (~32 km c/u) en Tennessee.
-- Tiempo límite: 60 horas.
-- Sin ruta marcada. Solo con mapa, brújula… y paciencia.`
+
+## El rey de la Zona 2 ⚡
+- Watts en Zona 2 de un mortal promedio: 140-200w
+- Pogačar: **340w y lo puede mantener por 5 horas**
+¿Cuánto tiempo puedes mantener 340W?
+
+---
+
+## Tu corazón vs el de Pogačar
+- El promedio de la población tiene un pulso en reposo de entre 60 y 80 ppm
+- Tadej Pogačar promedia 42 ppm
+- Su pulso más bajo: **37 ppm**
+**¿Cuánto es tu pulso en reposo?**
+
+---
+
+## Su cuerpo no es de este planeta
+La variabilidad de la frecuencia cardíaca (HRV) refleja qué tan recuperado o estresado esta tu cuerpo.
+- HRV promedio: 30-50
+- Pogačar: **120-150**
+
+---
+
+## La máquina perfecta
+- VO2 max promedio: 40-50 ml/kg/min
+- Pogačar: **88 ml/kg/min**
+- Su umbral anaeróbico: **85% del VO2 max**
+
+---
+
+## ¿Y tu entrenamiento?
+- ¿Cuántas horas semanales dedicas al entrenamiento?
+- ¿Qué tan específico es tu plan?
+- ¿Mides tu progreso?
+
+---
+
+## La realidad
+Los datos no mienten. La diferencia entre un mortal y un campeón es abismal.`
 
 function parseMarkdownToSlides(markdown: string): SlideData[] {
   const slidesRaw = markdown.split("---").map((s) => s.trim())
@@ -62,8 +101,12 @@ export default function SlideBuilderPage() {
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
   const [slideImages, setSlideImages] = useState<Record<number, string>>({})
   const [imageTimestamps, setImageTimestamps] = useState<Record<number, number>>({})
+  const [textColor, setTextColor] = useState('#000000')
+  const [currentTheme, setCurrentTheme] = useState<Theme>(() => getCurrentTheme() || getDefaultTheme())
+  const [language, setLanguage] = useState<'es' | 'en'>('es') // Default to Spanish
   const slides = useMemo(() => parseMarkdownToSlides(markdown), [markdown])
   const slideRefs = useRef<(SlideRef | null)[]>([])
+  const t = getTranslation(language)
 
   useEffect(() => {
     // Try to load content from input.md file
@@ -116,10 +159,39 @@ export default function SlideBuilderPage() {
     }))
   }
 
+  const handleBackgroundChange = async (type: 'first' | 'middle' | 'last', file: File) => {
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+      formData.append('backgroundType', type)
+
+      const response = await fetch('/api/upload-background', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to upload background')
+      }
+
+      const result = await response.json()
+      if (result.success) {
+        // Force a re-render by updating a timestamp
+        setImageTimestamps(prev => ({
+          ...prev,
+          background: Date.now()
+        }))
+      }
+    } catch (error) {
+      console.error('Background upload error:', error)
+      throw error
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
+        <div className="text-lg">{t.common.loading}</div>
       </div>
     )
   }
@@ -128,8 +200,16 @@ export default function SlideBuilderPage() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4">
-          <h1 className="text-3xl font-bold text-gray-900">Los Coaches - Slide Builder</h1>
-          <p className="text-gray-600 mt-1">Create professional slides from Markdown content</p>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">{t.header.title}</h1>
+              <p className="text-gray-600 mt-1">{t.header.subtitle}</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Instructions language={language} />
+              <LanguageSwitcher language={language} onLanguageChange={setLanguage} />
+            </div>
+          </div>
         </div>
       </header>
 
@@ -138,24 +218,24 @@ export default function SlideBuilderPage() {
           {/* Input Section */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Markdown Input</h2>
-              <span className="text-sm text-gray-500">{slides.length} slides</span>
+              <h2 className="text-xl font-semibold text-gray-900">{t.input.title}</h2>
+              <span className="text-sm text-gray-500">{slides.length} {t.common.slides}</span>
             </div>
             <Textarea
               value={markdown}
               onChange={(e) => setMarkdown(e.target.value)}
               className="w-full h-[600px] font-mono text-sm resize-none"
-              placeholder="Paste your slide content here..."
+              placeholder={t.input.placeholder}
             />
             <div className="text-xs text-gray-500">
-              Use "---" to separate slides. Each slide should start with "## Title" followed by content. Use "- " for bullets and "&gt; " for quotes.
+              {t.input.help}
             </div>
           </div>
 
           {/* Preview Section */}
           <div className="space-y-6">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold text-gray-900">Generated Slides</h2>
+              <h2 className="text-xl font-semibold text-gray-900">{t.preview.title}</h2>
               {slides.length > 0 && (
                 <Button 
                   onClick={handleDownloadAll} 
@@ -163,7 +243,7 @@ export default function SlideBuilderPage() {
                   className="flex items-center gap-2"
                 >
                   <DownloadCloud size={16} />
-                  {isDownloadingAll ? 'Downloading...' : `Download All (${slides.length})`}
+                  {isDownloadingAll ? t.preview.downloading : `${t.preview.downloadAll} (${slides.length})`}
                 </Button>
               )}
             </div>
@@ -177,17 +257,19 @@ export default function SlideBuilderPage() {
                           slideRefs.current[index] = el
                         }}
                         slide={slide}
-                        currentImageUrl={`${slideImages[slide.slideNumber] || `/slide${slide.slideNumber}.png`}?t=${imageTimestamps[slide.slideNumber] || 0}`}
+                        currentImageUrl={slideImages[slide.slideNumber] ? `${slideImages[slide.slideNumber]}?t=${imageTimestamps[slide.slideNumber] || 0}` : ''}
+                        textColor={currentTheme.textColor}
+                        theme={currentTheme}
                       />
                     </div>
                   </div>
                   
                   {/* Image Upload Interface */}
                   <div className="space-y-2 w-[360px]">
-                    <div className="text-sm font-medium text-gray-700">Slide {slide.slideNumber} Image</div>
+                    <div className="text-sm font-medium text-gray-700">{t.preview.slideImage} {slide.slideNumber}</div>
                     <ImageUpload
                       slideNumber={slide.slideNumber}
-                      currentImageUrl={`${slideImages[slide.slideNumber] || `/slide${slide.slideNumber}.png`}?t=${imageTimestamps[slide.slideNumber] || 0}`}
+                      currentImageUrl={slideImages[slide.slideNumber] ? `${slideImages[slide.slideNumber]}?t=${imageTimestamps[slide.slideNumber] || 0}` : ''}
                       onImageUploaded={(imageUrl) => handleImageUploaded(slide.slideNumber, imageUrl)}
                     />
                   </div>
@@ -200,7 +282,7 @@ export default function SlideBuilderPage() {
                       className="flex items-center gap-2"
                     >
                       <Download size={14} />
-                      Download Slide {slide.slideNumber}
+                      {t.preview.downloadSlide} {slide.slideNumber}
                     </Button>
                   </div>
                 </div>
@@ -209,6 +291,16 @@ export default function SlideBuilderPage() {
           </div>
         </div>
       </main>
+      
+      {/* Settings Component */}
+      <Settings
+        onBackgroundChange={handleBackgroundChange}
+        onTextColorChange={setTextColor}
+        onThemeChange={setCurrentTheme}
+        currentTextColor={textColor}
+        currentTheme={currentTheme}
+        language={language}
+      />
     </div>
   )
 }

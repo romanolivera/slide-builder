@@ -157,6 +157,16 @@ Next slide content here...
 - `bg3.png` - Used for the last slide
 
 #### Content Images
+You can add content images in two ways:
+
+**Method 1: Interactive Upload (Recommended)**
+1. Click on the image area below each slide preview
+2. Select any image file (JPG, PNG, WebP, GIF, etc.)
+3. The image will be automatically converted to PNG and resized
+4. Images are automatically named `slide{N}.png` where N is the slide number
+5. Hover over uploaded images to see a red X button for removal
+
+**Method 2: Manual File Placement**
 Place your content images in the `public/` folder with the following naming convention:
 
 - `slide1.png` - Content image for slide 1
@@ -166,14 +176,8 @@ Place your content images in the `public/` folder with the following naming conv
 - `slide5.png` - Content image for slide 5
 - etc.
 
-**To add a new slide image:**
-1. Place your image file in the `public/` folder
-2. Name it `slide{N}.png` where N is the slide number
-3. The image will automatically appear in the corresponding slide
-4. If no image exists for a slide, a placeholder will be shown automatically
-
 **Image Requirements:**
-- Format: PNG, JPG, or WebP
+- Format: Any image format (automatically converted to PNG)
 - Recommended size: 600x400 pixels or similar aspect ratio
 - The image will be automatically scaled and cropped to fit
 

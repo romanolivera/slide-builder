@@ -7,6 +7,7 @@ import { toPng } from "html-to-image"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import ReactMarkdown from 'react-markdown'
+import { ImageUpload } from "./image-upload"
 
 export interface SlideData {
   title: string
@@ -21,6 +22,7 @@ export interface SlideData {
 
 interface SlideProps {
   slide: SlideData
+  currentImageUrl?: string
 }
 
 export interface SlideRef {
@@ -29,7 +31,7 @@ export interface SlideRef {
 
 type ElementType = 'title' | 'subtitle' | 'bullets' | 'quotes' | 'callout'
 
-export const Slide = forwardRef<SlideRef, SlideProps>(({ slide }, ref) => {
+export const Slide = forwardRef<SlideRef, SlideProps>(({ slide, currentImageUrl }, ref) => {
   const { title, subtitle, bullets, quotes, callout, slideNumber, isFirstSlide, isLastSlide } = slide
   const slideRef = useRef<HTMLDivElement>(null)
   const [selectedElement, setSelectedElement] = useState<ElementType>('bullets')
@@ -100,10 +102,16 @@ export const Slide = forwardRef<SlideRef, SlideProps>(({ slide }, ref) => {
 
   // Function to get the appropriate content image based on slide number
   const getContentImage = () => {
+    // Use the provided currentImageUrl if available, otherwise fall back to the default path
+    if (currentImageUrl) {
+      return currentImageUrl
+    }
     // Check if a specific slide image exists, otherwise use placeholder
     const slideImagePath = `/slide${slideNumber}.png`
     return slideImagePath
   }
+
+
 
   const availableElements = getAvailableElements()
 
@@ -256,6 +264,7 @@ export const Slide = forwardRef<SlideRef, SlideProps>(({ slide }, ref) => {
           </div>
         )}
       </div>
+
     </div>
   )
 })

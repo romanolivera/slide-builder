@@ -5,6 +5,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Download, DownloadCloud } from "lucide-react"
 import { Slide, type SlideData, type SlideRef } from "@/components/slide"
+import { ImageUpload } from "@/components/image-upload"
 
 const defaultMarkdown = `# Slide 1
 ## ¿Por qué el Barkley Marathons no da medallas?
@@ -59,6 +60,8 @@ export default function SlideBuilderPage() {
   const [markdown, setMarkdown] = useState(defaultMarkdown)
   const [isLoading, setIsLoading] = useState(true)
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
+  const [slideImages, setSlideImages] = useState<Record<number, string>>({})
+  const [imageTimestamps, setImageTimestamps] = useState<Record<number, number>>({})
   const slides = useMemo(() => parseMarkdownToSlides(markdown), [markdown])
   const slideRefs = useRef<(SlideRef | null)[]>([])
 
@@ -100,6 +103,17 @@ export default function SlideBuilderPage() {
     } finally {
       setIsDownloadingAll(false)
     }
+  }
+
+  const handleImageUploaded = (slideNumber: number, imageUrl: string) => {
+    setSlideImages(prev => ({
+      ...prev,
+      [slideNumber]: imageUrl
+    }))
+    setImageTimestamps(prev => ({
+      ...prev,
+      [slideNumber]: Date.now()
+    }))
   }
 
   if (isLoading) {
@@ -155,18 +169,30 @@ export default function SlideBuilderPage() {
             </div>
             <div className="space-y-8 max-h-[800px] overflow-y-auto pr-4">
               {slides.map((slide, index) => (
-                <div key={slide.slideNumber} className="space-y-4">
+                <div key={slide.slideNumber} className="space-y-4 flex flex-col items-center">
                   <div className="w-[360px] aspect-[1080/1350] bg-white border rounded-lg shadow relative overflow-hidden flex items-center justify-center">
                     <div style={{ width: '1080px', height: '1350px', position: 'absolute', top: 0, left: 0, transform: 'scale(0.333)', transformOrigin: 'top left' }}>
                       <Slide 
                         ref={(el) => {
                           slideRefs.current[index] = el
                         }}
-                        slide={slide} 
+                        slide={slide}
+                        currentImageUrl={`${slideImages[slide.slideNumber] || `/slide${slide.slideNumber}.png`}?t=${imageTimestamps[slide.slideNumber] || 0}`}
                       />
                     </div>
                   </div>
-                  <div className="flex justify-center">
+                  
+                  {/* Image Upload Interface */}
+                  <div className="space-y-2 w-[360px]">
+                    <div className="text-sm font-medium text-gray-700">Slide {slide.slideNumber} Image</div>
+                    <ImageUpload
+                      slideNumber={slide.slideNumber}
+                      currentImageUrl={`${slideImages[slide.slideNumber] || `/slide${slide.slideNumber}.png`}?t=${imageTimestamps[slide.slideNumber] || 0}`}
+                      onImageUploaded={(imageUrl) => handleImageUploaded(slide.slideNumber, imageUrl)}
+                    />
+                  </div>
+                  
+                  <div className="flex justify-center w-[360px]">
                     <Button 
                       onClick={() => slideRefs.current[index]?.download()}
                       variant="outline"

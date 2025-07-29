@@ -1,0 +1,43 @@
+---
+name: Test File Cleanup Rule
+description:everytime you need to write a file for a test, either a script or data, you should remove it immediately from the project after the test has been completed.
+globs:
+alwaysApply: false
+---
+
+# Test File Cleanup Rule
+
+## When to Apply
+- After writing any test script, data file, or temporary file for testing purposes
+- After running tests that create temporary files
+- After debugging sessions that generate test data
+
+## What to Remove
+- Test scripts (files with "test" in the name)
+- Temporary data files created for testing
+- Test configuration files that are no longer needed
+- Debug output files
+- Temporary directories created for testing
+
+## Process
+1. **Identify test files**: Look for files with patterns like `*test*`, `*Test*`, `test-*`, `*_test*`
+2. **Verify completion**: Ensure the test or debugging session is complete
+3. **Remove immediately**: Delete the file using appropriate tools
+4. **Confirm cleanup**: Verify the file has been removed from the project
+
+## File Patterns to Target
+- `test-*.js/ts/jsx/tsx/py/sh/bat`
+- `*test*.js/ts/jsx/tsx/py/sh/bat`
+- `*Test*.js/ts/jsx/tsx/py/sh/bat`
+- `*_test*.js/ts/jsx/tsx/py/sh/bat`
+- Files in `temp/`, `tmp/`, `test-data/`, `test-scripts/`, `test-files/` directories
+
+## Exceptions
+- Do NOT remove files that are part of the actual test suite (like `__tests__/` directories)
+- Do NOT remove files that are explicitly part of the project's testing infrastructure
+- Do NOT remove files that contain important data or configurations
+
+## Tools to Use
+- Use `delete_file` tool for individual files
+- Use terminal commands for bulk removal when appropriate
+- Always confirm deletion before proceeding

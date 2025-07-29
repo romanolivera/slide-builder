@@ -226,7 +226,12 @@ export const Slide = forwardRef<SlideRef, SlideProps>(({ slide, currentImageUrl,
               </div>
             )}
             {/* Image Area - Bottom section */}
-            <div className="flex-1 flex items-center justify-center w-full">
+            <div 
+              className="flex-1 flex items-center justify-center w-full"
+              style={{
+                transform: isLastSlide ? 'translateY(-20px)' : 'none'
+              }}
+            >
               {getContentImage() ? (
                 <Image
                   src={getContentImage()}

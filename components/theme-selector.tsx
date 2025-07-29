@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Theme, getAllThemes, getCurrentTheme, saveCurrentTheme, deleteCustomTheme } from "@/lib/themes"
+import { Theme, getAllThemes, saveCurrentTheme, deleteCustomTheme, getDefaultTheme } from "@/lib/themes"
 import { Palette, Trash2, Check } from "lucide-react"
 import { getTranslation } from "@/lib/translations"
 
@@ -29,18 +29,9 @@ export function ThemeSelector({ onThemeChange, currentTheme, language }: ThemeSe
       deleteCustomTheme(themeId)
       // If we're deleting the current theme, switch to default
       if (themeId === currentTheme.id) {
-        const defaultTheme: Theme = {
-          id: 'default',
-          name: 'Default',
-          textColor: '#000000',
-          backgrounds: {
-            first: '/bg1.png',
-            middle: '/bg2.png',
-            last: '/bg3.png'
-          },
-          createdAt: 0
-        }
+        const defaultTheme = getDefaultTheme()
         onThemeChange(defaultTheme)
+        saveCurrentTheme(defaultTheme)
       }
       // Force re-render
       window.location.reload()

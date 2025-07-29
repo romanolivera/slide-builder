@@ -1,16 +1,20 @@
 # Slide Builder
 
-A Next.js application for creating professional slides from Markdown content. Perfect for creating presentation slides with custom backgrounds and content images.
+A Next.js application for creating professional slides from Markdown content. Perfect for creating presentation slides with custom backgrounds, content images, and themes. Features comprehensive step-by-step instructions and full bilingual support (Spanish/English).
 
-## Features
+## ✨ Features
 
-- **Markdown Input**: Write slide content using simple Markdown syntax
-- **Auto-Parsing**: Automatically converts Markdown to structured slide data
-- **Custom Images**: Support for custom background and content images
-- **Download**: Export individual slides as high-quality PNG images
-- **Responsive Design**: Works on desktop and mobile devices
+- **📝 Markdown Input**: Write slide content using simple Markdown syntax
+- **🔄 Auto-Parsing**: Automatically converts Markdown to structured slide data
+- **🖼️ Interactive Image Upload**: Click to add images to each slide with automatic conversion
+- **🎨 Theme Management**: Create and save custom themes with backgrounds and text colors
+- **🌍 Bilingual Support**: Full Spanish and English interface with easy language switching
+- **📋 Step-by-Step Instructions**: Comprehensive guide accessible via the instructions button
+- **⬇️ Download**: Export individual slides or all slides as high-quality PNG images
+- **📱 Responsive Design**: Works on desktop and mobile devices
+- **⚙️ Settings Panel**: Easy access to theme management and customization
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -37,7 +41,21 @@ pnpm dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Usage
+## 📖 How to Use
+
+### Quick Start Guide
+
+1. **📋 Read Instructions**: Click the "Instrucciones" (Spanish) or "Instructions" (English) button in the top-right corner for a complete step-by-step guide.
+
+2. **🌍 Choose Language**: Use the language switcher (globe icon) to toggle between Spanish and English.
+
+3. **📝 Write Content**: Use the Markdown input area on the left to write your slide content.
+
+4. **🖼️ Add Images**: Click on the image area below each slide to upload content images.
+
+5. **🎨 Customize Theme**: Click the "Settings" button to create custom themes with backgrounds and text colors.
+
+6. **⬇️ Download**: Use the download buttons to export your slides.
 
 ### Writing Slide Content
 
@@ -45,15 +63,23 @@ Use the Markdown input area to create your slides. Each slide should be separate
 
 **Example:**
 ```markdown
-# Slide 1
-## ¿Por qué el Barkley Marathons no da medallas?
-La carrera más brutal del mundo... sin premio.
+## Si tu ego es frágil... no veas este carrusel
+Estos datos duelen más que ver tus fotos de hace 10 años.
+
 ---
-# Slide 2
-## ¿Qué es el Barkley?
-- Un ultramaratón de 5 vueltas (~32 km c/u) en Tennessee.
-- Tiempo límite: 60 horas.
-- Sin ruta marcada. Solo con mapa, brújula… y paciencia.
+
+## El rey de la Zona 2 ⚡
+- Watts en Zona 2 de un mortal promedio: 140-200w
+- Pogačar: **340w y lo puede mantener por 5 horas**
+¿Cuánto tiempo puedes mantener 340W?
+
+---
+
+## Tu corazón vs el de Pogačar
+- El promedio de la población tiene un pulso en reposo de entre 60 y 80 ppm
+- Tadej Pogačar promedia 42 ppm
+- Su pulso más bajo: **37 ppm**
+**¿Cuánto es tu pulso en reposo?**
 ```
 
 ### Slide Structure
@@ -149,63 +175,131 @@ Next slide content here...
 - **Bullets**: All lines starting with `- ` are captured as bullets
 - **Any other lines**: Will be ignored unless they're the first or last eligible line
 
-### Adding Custom Images
+## 🖼️ Adding Images
 
-#### Background Images
-- `bg1.png` - Used for the first slide
-- `bg2.png` - Used for middle slides
-- `bg3.png` - Used for the last slide
+### Content Images (Interactive Upload)
 
-#### Content Images
-You can add content images in two ways:
+1. **Click the Image Area**: Below each slide preview, click on the dashed border area
+2. **Select Image**: Choose any image file (JPG, PNG, WebP, GIF, etc.)
+3. **Automatic Processing**: The image is automatically:
+   - Converted to PNG format
+   - Resized to 600x400 pixels
+   - Named `slide{N}.png` where N is the slide number
+4. **Remove Images**: Hover over uploaded images to see a red X button for removal
+5. **Temporary Storage**: Images are temporary and will be reset when you reload the page
 
-**Method 1: Interactive Upload (Recommended)**
-1. Click on the image area below each slide preview
-2. Select any image file (JPG, PNG, WebP, GIF, etc.)
-3. The image will be automatically converted to PNG and resized
-4. Images are automatically named `slide{N}.png` where N is the slide number
-5. Hover over uploaded images to see a red X button for removal
+### Background Images (Theme Management)
 
-**Method 2: Manual File Placement**
-Place your content images in the `public/` folder with the following naming convention:
+1. **Access Settings**: Click the "Settings" button in the top-right corner
+2. **Create Theme**: Click "Create New Theme" to set up custom backgrounds
+3. **Upload Backgrounds**: Upload three different background images:
+   - **First Slide Background**: Used for the first slide
+   - **Middle Slides Background**: Used for intermediate slides
+   - **Last Slide Background**: Used for the final slide
+4. **Save Theme**: Give your theme a name and save it for future use
 
-- `slide1.png` - Content image for slide 1
-- `slide2.png` - Content image for slide 2
-- `slide3.png` - Content image for slide 3
-- `slide4.png` - Content image for slide 4
-- `slide5.png` - Content image for slide 5
-- etc.
+## 🎨 Theme Management
 
-**Image Requirements:**
-- Format: Any image format (automatically converted to PNG)
-- Recommended size: 600x400 pixels or similar aspect ratio
-- The image will be automatically scaled and cropped to fit
+### Creating Custom Themes
 
-### Downloading Slides
+1. **Open Settings**: Click the "Settings" button (⚙️) in the top-right corner
+2. **Create New Theme**: Click "Create New Theme" in the Theme Management section
+3. **Configure Theme**:
+   - **Theme Name**: Give your theme a descriptive name
+   - **Text Color**: Choose the color for all text on slides
+   - **Background Images**: Upload three different background images
+4. **Save Theme**: Click "Create Theme" to save your custom theme
 
-Click the "Download Slide X" button below each slide to export it as a high-quality PNG image.
+### Managing Themes
 
-## Project Structure
+- **Select Theme**: Use the "Current Theme" dropdown to switch between themes
+- **Delete Themes**: Custom themes can be deleted using the trash icon
+- **Default Theme**: A basic theme is always available as fallback
+
+### Theme Features
+
+- **Persistent Storage**: Themes are saved in your browser's localStorage
+- **Multiple Themes**: Create as many themes as you need
+- **Background Variety**: Different backgrounds for first, middle, and last slides
+- **Text Color Control**: Customize text color for better readability
+
+## 🌍 Language Support
+
+### Switching Languages
+
+- **Language Switcher**: Use the globe icon (🌍) in the top-right corner
+- **Available Languages**: 
+  - 🇪🇸 Español (Default)
+  - 🇺🇸 English
+- **Persistent Setting**: Your language choice is remembered across sessions
+
+### Bilingual Features
+
+- **Complete Interface**: All buttons, labels, and messages are translated
+- **Instructions**: Step-by-step guide available in both languages
+- **Error Messages**: All error messages and notifications are bilingual
+- **Help Text**: All help text and tooltips are translated
+
+## 📋 Instructions System
+
+### Accessing Instructions
+
+- **Instructions Button**: Click "Instrucciones" (Spanish) or "Instructions" (English) in the header
+- **Comprehensive Guide**: Complete step-by-step instructions with examples
+- **Visual Examples**: Code snippets and visual guides
+- **Pro Tips**: Best practices and helpful hints
+
+### Instruction Topics
+
+1. **Writing Markdown**: How to structure your slide content
+2. **Adding Images**: Interactive image upload process
+3. **Theme Customization**: Creating and managing themes
+4. **Downloading Slides**: How to export your presentations
+
+## ⬇️ Downloading Slides
+
+### Individual Slides
+- Click "Download Slide X" below each slide
+- Exports as high-quality PNG image
+- Maintains 1080x1350px aspect ratio
+
+### All Slides
+- Click "Download All (X)" button in the preview section
+- Downloads all slides sequentially
+- Each slide saved as separate PNG file
+
+## 🏗️ Project Structure
 
 ```
 slide-builder/
 ├── app/
-│   ├── page.tsx          # Main application page
-│   └── layout.tsx        # Root layout
+│   ├── api/
+│   │   ├── upload-image/route.ts      # Content image upload API
+│   │   ├── delete-image/route.ts      # Content image deletion API
+│   │   └── upload-background/route.ts # Background image upload API
+│   ├── page.tsx                       # Main application page
+│   └── layout.tsx                     # Root layout
 ├── components/
-│   ├── slide.tsx         # Slide component with image integration
-│   └── ui/               # UI components
+│   ├── slide.tsx                      # Slide component with image integration
+│   ├── image-upload.tsx               # Interactive image upload component
+│   ├── settings.tsx                   # Settings dialog with theme management
+│   ├── theme-editor.tsx               # Theme creation component
+│   ├── theme-selector.tsx             # Theme selection component
+│   ├── instructions.tsx               # Step-by-step instructions dialog
+│   ├── language-switcher.tsx          # Language selection component
+│   └── ui/                            # UI components
+├── lib/
+│   ├── themes.ts                      # Theme management utilities
+│   └── translations.ts                # Bilingual text content
 ├── public/
-│   ├── bg1.png          # Background for first slide
-│   ├── bg2.png          # Background for middle slides
-│   ├── bg3.png          # Background for last slide
-│   ├── slide1.png       # Content image for slide 1
-│   ├── slide2.png       # Content image for slide 2
-│   └── input.md         # Default slide content
+│   ├── bg1.png                       # Default background for first slide
+│   ├── bg2.png                       # Default background for middle slides
+│   ├── bg3.png                       # Default background for last slide
+│   └── input.md                      # Default slide content
 └── README.md
 ```
 
-## Customization
+## 🔧 Customization
 
 ### Modifying Slide Layout
 Edit `components/slide.tsx` to change:
@@ -228,7 +322,7 @@ The `getContentImage()` function in `slide.tsx` can be extended to support:
 - Dynamic image selection based on content
 - External image URLs
 
-## Development
+## 🛠️ Development
 
 ### Available Scripts
 
@@ -245,14 +339,22 @@ The `getContentImage()` function in `slide.tsx` can be extended to support:
 - **Radix UI** - UI components
 - **html-to-image** - Image generation
 - **React Markdown** - Markdown rendering
+- **Sharp** - Image processing
+- **Lucide React** - Icons
 
-## Contributing
+### API Endpoints
+
+- `POST /api/upload-image` - Upload content images
+- `DELETE /api/delete-image` - Delete content images
+- `POST /api/upload-background` - Upload background images
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
 4. Submit a pull request
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License. 

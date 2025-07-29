@@ -23,6 +23,9 @@ export function saveCustomTheme(theme: Omit<Theme, 'id' | 'createdAt'>): string 
   customThemes.push(newTheme)
   localStorage.setItem('custom-themes', JSON.stringify(customThemes))
   
+  // Also save as current theme
+  saveCurrentTheme(newTheme)
+  
   return id
 }
 
@@ -36,12 +39,20 @@ export function getCustomThemes(): Theme[] {
 }
 
 export function getAllThemes(): Theme[] {
-  return getCustomThemes()
+  const customThemes = getCustomThemes()
+  const defaultTheme = getDefaultTheme()
+  return [defaultTheme, ...customThemes]
 }
 
 export function deleteCustomTheme(id: string): void {
   const customThemes = getCustomThemes().filter(theme => theme.id !== id)
   localStorage.setItem('custom-themes', JSON.stringify(customThemes))
+  
+  // If we're deleting the current theme, switch to default
+  const currentTheme = getCurrentTheme()
+  if (currentTheme && currentTheme.id === id) {
+    saveCurrentTheme(getDefaultTheme())
+  }
 }
 
 export function saveCurrentTheme(theme: Theme): void {
@@ -51,7 +62,21 @@ export function saveCurrentTheme(theme: Theme): void {
 export function getCurrentTheme(): Theme | null {
   try {
     const stored = localStorage.getItem('current-theme')
-    return stored ? JSON.parse(stored) : null
+    if (stored) {
+      const theme = JSON.parse(stored)
+      // Validate that the theme still exists (for custom themes)
+      if (theme.id === 'default') {
+        return theme
+      }
+      const customThemes = getCustomThemes()
+      const themeExists = customThemes.some(t => t.id === theme.id)
+      if (themeExists) {
+        return theme
+      }
+      // If theme doesn't exist anymore, return null to fall back to default
+      return null
+    }
+    return null
   } catch {
     return null
   }
@@ -69,4 +94,13 @@ export function getDefaultTheme(): Theme {
     },
     createdAt: 0
   }
+}
+
+// Helper function to get the best available theme
+export function getBestAvailableTheme(): Theme {
+  const currentTheme = getCurrentTheme()
+  if (currentTheme) {
+    return currentTheme
+  }
+  return getDefaultTheme()
 } 

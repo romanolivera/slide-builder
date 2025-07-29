@@ -7,7 +7,7 @@ import { Download, DownloadCloud } from "lucide-react"
 import { Slide, type SlideData, type SlideRef } from "@/components/slide"
 import { ImageUpload } from "@/components/image-upload"
 import { Settings } from "@/components/settings"
-import { Theme, getCurrentTheme, getDefaultTheme } from "@/lib/themes"
+import { Theme, getBestAvailableTheme } from "@/lib/themes"
 import { Instructions } from "@/components/instructions"
 import { LanguageSwitcher } from "@/components/language-switcher"
 import { getTranslation } from "@/lib/translations"
@@ -102,7 +102,7 @@ export default function SlideBuilderPage() {
   const [slideImages, setSlideImages] = useState<Record<number, string>>({})
   const [imageTimestamps, setImageTimestamps] = useState<Record<number, number>>({})
   const [textColor, setTextColor] = useState('#000000')
-  const [currentTheme, setCurrentTheme] = useState<Theme>(() => getCurrentTheme() || getDefaultTheme())
+  const [currentTheme, setCurrentTheme] = useState<Theme>(() => getBestAvailableTheme())
   const [language, setLanguage] = useState<'es' | 'en'>('es') // Default to Spanish
   const slides = useMemo(() => parseMarkdownToSlides(markdown), [markdown])
   const slideRefs = useRef<(SlideRef | null)[]>([])
@@ -186,6 +186,14 @@ export default function SlideBuilderPage() {
       console.error('Background upload error:', error)
       throw error
     }
+  }
+
+  const handleThemeChange = (theme: Theme) => {
+    setCurrentTheme(theme)
+    // Save the theme selection permanently
+    import('@/lib/themes').then(({ saveCurrentTheme }) => {
+      saveCurrentTheme(theme)
+    })
   }
 
   if (isLoading) {
@@ -296,7 +304,7 @@ export default function SlideBuilderPage() {
       <Settings
         onBackgroundChange={handleBackgroundChange}
         onTextColorChange={setTextColor}
-        onThemeChange={setCurrentTheme}
+        onThemeChange={handleThemeChange}
         currentTextColor={textColor}
         currentTheme={currentTheme}
         language={language}

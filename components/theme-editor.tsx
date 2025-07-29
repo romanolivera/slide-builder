@@ -47,17 +47,19 @@ export function ThemeEditor({ onThemeCreated, language }: ThemeEditorProps) {
       const formData = new FormData()
       formData.append('image', file)
       formData.append('backgroundType', type)
+      // Generate a temporary theme ID for upload
+      const tempThemeId = `temp-${Date.now()}`
 
-                const controller = new AbortController()
-          const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
-          
-          const response = await fetch('/api/upload-background', {
-            method: 'POST',
-            body: formData,
-            signal: controller.signal
-          })
-          
-          clearTimeout(timeoutId)
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
+      
+      const response = await fetch('/api/upload-theme-background', {
+        method: 'POST',
+        body: formData,
+        signal: controller.signal
+      })
+      
+      clearTimeout(timeoutId)
 
       if (!response.ok) {
         const errorText = await response.text()
@@ -109,7 +111,10 @@ export function ThemeEditor({ onThemeCreated, language }: ThemeEditorProps) {
 
     setIsCreating(true)
     try {
-      // Upload all backgrounds first
+      // Create a temporary theme ID for upload
+      const uploadThemeId = `theme-${Date.now()}`
+      
+      // Upload all backgrounds with the temporary theme ID
       const backgroundUrls: { [key: string]: string } = {}
       
       // Create a new array of upload promises to handle them properly
@@ -124,11 +129,12 @@ export function ThemeEditor({ onThemeCreated, language }: ThemeEditorProps) {
           const formData = new FormData()
           formData.append('image', file)
           formData.append('backgroundType', type)
+          formData.append('themeId', uploadThemeId)
 
           const controller = new AbortController()
           const timeoutId = setTimeout(() => controller.abort(), 30000) // 30 second timeout
           
-          const response = await fetch('/api/upload-background', {
+          const response = await fetch('/api/upload-theme-background', {
             method: 'POST',
             body: formData,
             signal: controller.signal
@@ -168,7 +174,7 @@ export function ThemeEditor({ onThemeCreated, language }: ThemeEditorProps) {
         throw new Error('Some background uploads failed')
       }
 
-      // Create and save the theme
+      // Create and save the theme with permanent background URLs
       const newTheme = {
         name: themeName.trim(),
         textColor,

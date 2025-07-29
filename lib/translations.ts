@@ -93,7 +93,7 @@ export const translations: Record<'es' | 'en', Translations> = {
       themeNamePlaceholder: "Ingresa nombre del tema...",
       textColor: "Color del Texto",
       backgroundImages: "Imágenes de Fondo",
-      backgroundImagesHelp: "Sube tres imágenes de fondo para tu tema",
+      backgroundImagesHelp: "Sube tres imágenes de fondo para tu tema. Los temas se guardan permanentemente.",
       firstSlideBackground: "Fondo del Primer Slide",
       middleSlidesBackground: "Fondo de Slides Intermedios",
       lastSlideBackground: "Fondo del Último Slide",
@@ -110,7 +110,7 @@ export const translations: Record<'es' | 'en', Translations> = {
       title: "Seleccionar Tema",
       noThemesCreated: "Aún no se han creado temas",
       noThemesCreatedHelp: "Crea tu primer tema para comenzar",
-      clickToSelect: "* Haz clic en un tema para seleccionarlo. Los temas personalizados se pueden eliminar.",
+      clickToSelect: "* Haz clic en un tema para seleccionarlo. Los temas se guardan permanentemente y se pueden eliminar.",
       customThemesCanBeDeleted: "Los temas personalizados se pueden eliminar."
     },
     instructions: {
@@ -154,7 +154,7 @@ export const translations: Record<'es' | 'en', Translations> = {
       themeNamePlaceholder: "Enter theme name...",
       textColor: "Text Color",
       backgroundImages: "Background Images",
-      backgroundImagesHelp: "Upload three background images for your theme",
+      backgroundImagesHelp: "Upload three background images for your theme. Themes are permanently saved.",
       firstSlideBackground: "First Slide Background",
       middleSlidesBackground: "Middle Slides Background",
       lastSlideBackground: "Last Slide Background",
@@ -171,7 +171,7 @@ export const translations: Record<'es' | 'en', Translations> = {
       title: "Select Theme",
       noThemesCreated: "No themes created yet",
       noThemesCreatedHelp: "Create your first theme to get started",
-      clickToSelect: "* Click on a theme to select it. Custom themes can be deleted.",
+      clickToSelect: "* Click on a theme to select it. Themes are permanently saved and can be deleted.",
       customThemesCanBeDeleted: "Custom themes can be deleted."
     },
     instructions: {

@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
 import sharp from 'sharp'
 
 export async function POST(request: NextRequest) {
@@ -22,29 +20,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
     }
 
+    // Validate file size (max 1MB)
+    if (file.size > 1 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File size must be less than 1MB' }, { status: 400 })
+    }
+
     // Convert file to buffer
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
-    // Convert to PNG using sharp
-    const pngBuffer = await sharp(buffer)
-      .png()
-      .resize(600, 400, { fit: 'cover' })
+    // Convert to JPEG using sharp and resize to very small dimensions
+    const jpegBuffer = await sharp(buffer)
+      .jpeg({ quality: 60 })
+      .resize(200, 150, { fit: 'cover' })
       .toBuffer()
 
-    // Ensure public directory exists
-    const publicDir = join(process.cwd(), 'public')
-    await mkdir(publicDir, { recursive: true })
-
-    // Save the PNG file
-    const filename = `slide${slideNumber}.png`
-    const filepath = join(publicDir, filename)
-    await writeFile(filepath, pngBuffer)
+    // Convert to base64 for storage
+    const base64Data = jpegBuffer.toString('base64')
+    
+    // Validate base64 data length (250KB limit)
+    if (base64Data.length > 250000) {
+      return NextResponse.json({ error: 'Image too large after processing' }, { status: 400 })
+    }
+    
+    const dataUrl = `data:image/jpeg;base64,${base64Data}`
 
     return NextResponse.json({ 
       success: true, 
-      filename,
-      url: `/${filename}`
+      filename: `slide${slideNumber}.jpg`,
+      dataUrl,
+      base64Data
     })
 
   } catch (error) {

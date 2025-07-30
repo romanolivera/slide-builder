@@ -1,0 +1,1 @@
+Now let me test the current setup. The image upload component has debugging and uses regular HTML img tags. Let me check if the debugging shows us what is happening with the data URL.

@@ -152,7 +152,7 @@ export function ThemeEditor({ onThemeCreated, language }: ThemeEditorProps) {
             throw new Error(`Upload failed for ${type}: ${result.error || 'Unknown error'}`)
           }
 
-          return { type, url: result.url }
+          return { type, url: result.dataUrl }
         } catch (error) {
           console.error(`Error uploading ${type} background:`, error)
           throw new Error(`Failed to upload ${type} background: ${error instanceof Error ? error.message : 'Unknown error'}`)

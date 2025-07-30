@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { unlink } from 'fs/promises'
-import { join } from 'path'
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -11,22 +9,12 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'No slide number provided' }, { status: 400 })
     }
 
-    const filename = `slide${slideNumber}.png`
-    const filepath = join(process.cwd(), 'public', filename)
-
-    try {
-      await unlink(filepath)
-      return NextResponse.json({ 
-        success: true, 
-        message: `Deleted ${filename}` 
-      })
-    } catch (error) {
-      // File doesn't exist, which is fine
-      return NextResponse.json({ 
-        success: true, 
-        message: `File ${filename} not found` 
-      })
-    }
+    // Since images are now stored as base64 data URLs in the client,
+    // we just return success - the client will handle the actual removal
+    return NextResponse.json({ 
+      success: true, 
+      message: `Image for slide ${slideNumber} marked for deletion` 
+    })
 
   } catch (error) {
     console.error('Error deleting image:', error)

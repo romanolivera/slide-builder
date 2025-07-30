@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef, useState, forwardRef, useImperativeHandle } from "react"
+import Image from "next/image"
 import { ChevronUp, ChevronDown } from "lucide-react"
 import { toPng } from "html-to-image"
 import { Button } from "@/components/ui/button"
@@ -134,20 +135,16 @@ export const Slide = forwardRef<SlideRef, SlideProps>(({ slide, currentImageUrl,
           }}
         >
           {/* Background Image */}
-          <img 
+          <Image 
             src={
               theme 
                 ? (isFirstSlide ? theme.backgrounds.first : isLastSlide ? theme.backgrounds.last : theme.backgrounds.middle)
                 : (isFirstSlide ? "/bg1.png" : isLastSlide ? "/bg3.png" : "/bg2.png")
             } 
             alt="Background" 
-            className="object-cover absolute inset-0 w-full h-full"
-            onError={(e) => {
-              console.error('Background image failed to load:', e)
-              const currentSrc = (e.target as HTMLImageElement).src
-              console.log('Failed background image URL length:', currentSrc?.length)
-              console.log('Failed background image URL starts with:', currentSrc?.substring(0, 50))
-            }}
+            fill 
+            className="object-cover" 
+            priority 
           />
 
           {/* Content Areas following layout1.png structure */}
@@ -236,15 +233,13 @@ export const Slide = forwardRef<SlideRef, SlideProps>(({ slide, currentImageUrl,
               }}
             >
               {getContentImage() ? (
-                <img
+                <Image
                   src={getContentImage()}
                   alt={`Slide ${slideNumber} content`}
+                  width={600}
+                  height={400}
                   className="object-cover rounded-lg"
-                  style={{ width: '600px', height: '400px' }}
                   onError={(e) => {
-                    console.error('Content image failed to load:', e)
-                    console.log('Failed content image URL length:', getContentImage()?.length)
-                    console.log('Failed content image URL starts with:', getContentImage()?.substring(0, 50))
                     // Hide the image if it fails to load
                     const target = e.target as HTMLImageElement
                     target.style.display = 'none'

@@ -100,7 +100,6 @@ export default function SlideBuilderPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [isDownloadingAll, setIsDownloadingAll] = useState(false)
   const [slideImages, setSlideImages] = useState<Record<number, string>>({})
-  const [imageTimestamps, setImageTimestamps] = useState<Record<number, number>>({})
   const [textColor, setTextColor] = useState('#000000')
   const [currentTheme, setCurrentTheme] = useState<Theme>(() => getBestAvailableTheme())
   const [language, setLanguage] = useState<'es' | 'en'>('es') // Default to Spanish
@@ -153,10 +152,6 @@ export default function SlideBuilderPage() {
       ...prev,
       [slideNumber]: imageUrl
     }))
-    setImageTimestamps(prev => ({
-      ...prev,
-      [slideNumber]: Date.now()
-    }))
   }
 
   const handleBackgroundChange = async (type: 'first' | 'middle' | 'last', file: File) => {
@@ -176,11 +171,8 @@ export default function SlideBuilderPage() {
 
       const result = await response.json()
       if (result.success) {
-        // Force a re-render by updating a timestamp
-        setImageTimestamps(prev => ({
-          ...prev,
-          background: Date.now()
-        }))
+        // Background uploaded successfully
+        console.log('Background uploaded successfully')
       }
     } catch (error) {
       console.error('Background upload error:', error)
@@ -265,7 +257,7 @@ export default function SlideBuilderPage() {
                           slideRefs.current[index] = el
                         }}
                         slide={slide}
-                        currentImageUrl={slideImages[slide.slideNumber] ? `${slideImages[slide.slideNumber]}?t=${imageTimestamps[slide.slideNumber] || 0}` : ''}
+                        currentImageUrl={slideImages[slide.slideNumber] || ''}
                         textColor={currentTheme.textColor}
                         theme={currentTheme}
                       />
@@ -277,7 +269,7 @@ export default function SlideBuilderPage() {
                     <div className="text-sm font-medium text-gray-700">{t.preview.slideImage} {slide.slideNumber}</div>
                     <ImageUpload
                       slideNumber={slide.slideNumber}
-                      currentImageUrl={slideImages[slide.slideNumber] ? `${slideImages[slide.slideNumber]}?t=${imageTimestamps[slide.slideNumber] || 0}` : ''}
+                      currentImageUrl={slideImages[slide.slideNumber] || ''}
                       onImageUploaded={(imageUrl) => handleImageUploaded(slide.slideNumber, imageUrl)}
                     />
                   </div>

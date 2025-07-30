@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
 import sharp from 'sharp'
 
 export async function POST(request: NextRequest) {
@@ -27,29 +25,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
     }
 
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 })
+    }
+
     // Convert file to buffer
     const bytes = await file.arrayBuffer()
     const buffer = Buffer.from(bytes)
 
     // Convert to PNG and resize to slide dimensions
     const pngBuffer = await sharp(buffer)
-      .png()
-      .resize(1080, 1350, { fit: 'cover' })
+      .png({ quality: 80 })
+      .resize(800, 1000, { fit: 'cover' })
       .toBuffer()
 
-    // Ensure themes directory exists
-    const themesDir = join(process.cwd(), 'public', 'themes')
-    await mkdir(themesDir, { recursive: true })
-
-    // Save the PNG file with unique name based on theme ID and background type
-    const filename = `theme-${themeId}-${backgroundType}.png`
-    const filepath = join(themesDir, filename)
-    await writeFile(filepath, pngBuffer)
+    // Convert to base64 for storage
+    const base64Data = pngBuffer.toString('base64')
+    
+    // Validate base64 data length
+    if (base64Data.length > 2000000) { // 2MB limit for theme background images
+      return NextResponse.json({ error: 'Image too large after processing' }, { status: 400 })
+    }
+    
+    const dataUrl = `data:image/png;base64,${base64Data}`
 
     return NextResponse.json({ 
       success: true, 
-      filename,
-      url: `/themes/${filename}`,
+      filename: `theme-${themeId}-${backgroundType}.png`,
+      dataUrl,
+      base64Data,
       backgroundType,
       themeId
     })

@@ -3,8 +3,7 @@
 import { useState, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Upload, X, Image as ImageIcon } from "lucide-react"
-// Remove the Next.js Image import since we're using regular HTML img tags
-// import Image from "next/image"
+import Image from "next/image"
 
 interface ImageUploadProps {
   slideNumber: number
@@ -22,16 +21,12 @@ export function ImageUpload({ slideNumber, currentImageUrl, onImageUploaded }: I
     fileInputRef.current?.click()
   }
 
-  // Simple client-side file to data URL conversion with debugging
+  // Simple client-side file to data URL conversion
   const convertFileToDataUrl = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
       reader.onload = () => {
-        const result = reader.result as string
-        console.log('Data URL length:', result.length)
-        console.log('Data URL starts with:', result.substring(0, 50))
-        console.log('Data URL ends with:', result.substring(result.length - 20))
-        resolve(result)
+        resolve(reader.result as string)
       }
       reader.onerror = () => {
         reject(new Error('Failed to read file'))
@@ -63,8 +58,6 @@ export function ImageUpload({ slideNumber, currentImageUrl, onImageUploaded }: I
     try {
       // Process image entirely in the browser - no server communication
       const dataUrl = await convertFileToDataUrl(file)
-      
-      console.log('About to call onImageUploaded with data URL length:', dataUrl.length)
       
       // Use the data URL directly
       onImageUploaded(dataUrl)
@@ -104,17 +97,12 @@ export function ImageUpload({ slideNumber, currentImageUrl, onImageUploaded }: I
       >
         {currentImageUrl ? (
           <>
-            {/* Replace Next.js Image with regular HTML img tag */}
-            <img
+            <Image
               src={currentImageUrl}
               alt={`Slide ${slideNumber} content`}
+              width={120}
+              height={80}
               className="object-cover rounded-lg max-w-full max-h-full"
-              style={{ width: '120px', height: '80px' }}
-              onError={(e) => {
-                console.error('Image failed to load:', e)
-                console.log('Failed image URL length:', currentImageUrl?.length)
-                console.log('Failed image URL starts with:', currentImageUrl?.substring(0, 50))
-              }}
             />
             {/* Remove button overlay */}
             <Button
@@ -130,23 +118,23 @@ export function ImageUpload({ slideNumber, currentImageUrl, onImageUploaded }: I
             </Button>
           </>
         ) : (
-          <div className="text-center">
-            <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
-            <p className="text-sm text-gray-500">
-              {isUploading ? 'Processing...' : 'Click to add image'}
-            </p>
-            {uploadError && (
-              <p className="text-xs text-red-500 mt-1">{uploadError}</p>
-            )}
-            {!isUploading && !uploadError && !uploadSuccess && (
-              <p className="text-xs text-blue-500 mt-1">Image will appear in slide preview</p>
-            )}
-            {uploadSuccess && (
-              <p className="text-xs text-green-500 mt-1">✓ Image processed successfully!</p>
-            )}
-          </div>
+                      <div className="text-center">
+              <ImageIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
+              <p className="text-sm text-gray-500">
+                {isUploading ? 'Processing...' : 'Click to add image'}
+              </p>
+              {uploadError && (
+                <p className="text-xs text-red-500 mt-1">{uploadError}</p>
+              )}
+              {!isUploading && !uploadError && !uploadSuccess && (
+                <p className="text-xs text-blue-500 mt-1">Image will appear in slide preview</p>
+              )}
+              {uploadSuccess && (
+                <p className="text-xs text-green-500 mt-1">✓ Image processed successfully!</p>
+              )}
+            </div>
         )}
       </div>
     </div>
   )
-}
+} 

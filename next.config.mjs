@@ -9,6 +9,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  output: 'standalone',
+  serverExternalPackages: ['sharp'],
 }
 
 export default nextConfig

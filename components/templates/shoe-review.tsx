@@ -7,6 +7,7 @@ import { toPng } from "html-to-image"
 import type { SlideData, SlideRef } from "@/components/slide"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ChecklistItem } from "@/components/ui/checklist-item"
 import { ChevronUp, ChevronDown, ZoomIn, ZoomOut, Plus, Minus } from "lucide-react"
 
 interface ShoeReviewSlideProps {
@@ -219,26 +220,13 @@ export const ShoeReviewSlide = forwardRef<SlideRef, ShoeReviewSlideProps>(
                 gap: `${slide2LineSpacing * 20}px` 
               }}>
                 {bullets?.map((bullet, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-lg">✓</span>
-                    </div>
-                    <span 
-                      className="text-black font-medium"
-                      style={{ 
-                        fontFamily: "var(--font-architects-daughter), 'Architects Daughter', cursive",
-                        fontSize: `${slide2FontSize}px`,
-                        lineHeight: slide2LineSpacing
-                      }}
-                    >
-                      {bullet.split('|').map((line, lineIndex) => (
-                        <span key={lineIndex}>
-                          {line}
-                          {lineIndex < bullet.split('|').length - 1 && <br />}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
+                  <ChecklistItem
+                    key={index}
+                    type="check"
+                    text={bullet}
+                    fontSize={slide2FontSize}
+                    lineSpacing={slide2LineSpacing}
+                  />
                 ))}
               </div>
             </div>
@@ -284,26 +272,13 @@ export const ShoeReviewSlide = forwardRef<SlideRef, ShoeReviewSlideProps>(
                 gap: `${slide2LineSpacing * 20}px` 
               }}>
                 {bullets?.map((bullet, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-lg">✗</span>
-                    </div>
-                    <span 
-                      className="text-black font-medium"
-                      style={{ 
-                        fontFamily: "var(--font-architects-daughter), 'Architects Daughter', cursive",
-                        fontSize: `${slide2FontSize}px`,
-                        lineHeight: slide2LineSpacing
-                      }}
-                    >
-                      {bullet.split('|').map((line, lineIndex) => (
-                        <span key={lineIndex}>
-                          {line}
-                          {lineIndex < bullet.split('|').length - 1 && <br />}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
+                  <ChecklistItem
+                    key={index}
+                    type="cross"
+                    text={bullet}
+                    fontSize={slide2FontSize}
+                    lineSpacing={slide2LineSpacing}
+                  />
                 ))}
               </div>
             </div>
@@ -349,24 +324,13 @@ export const ShoeReviewSlide = forwardRef<SlideRef, ShoeReviewSlideProps>(
                 gap: `${slide2LineSpacing * 20}px` 
               }}>
                 {bullets?.map((bullet, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <span className="text-2xl flex-shrink-0">🔁</span>
-                    <span 
-                      className="text-black font-medium"
-                      style={{ 
-                        fontFamily: "var(--font-architects-daughter), 'Architects Daughter', cursive",
-                        fontSize: `${slide2FontSize}px`,
-                        lineHeight: slide2LineSpacing
-                      }}
-                    >
-                      {bullet.split('|').map((line, lineIndex) => (
-                        <span key={lineIndex}>
-                          {line}
-                          {lineIndex < bullet.split('|').length - 1 && <br />}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
+                  <ChecklistItem
+                    key={index}
+                    type="rotate"
+                    text={bullet}
+                    fontSize={slide2FontSize}
+                    lineSpacing={slide2LineSpacing}
+                  />
                 ))}
               </div>
             </div>
@@ -428,26 +392,14 @@ export const ShoeReviewSlide = forwardRef<SlideRef, ShoeReviewSlideProps>(
                 gap: `${slide2LineSpacing * 20}px` 
               }}>
                 {bullets?.map((bullet, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center flex-shrink-0">
-                      <span className="text-white font-bold text-xl">{index + 1}</span>
-                    </div>
-                    <span 
-                      className="text-black font-medium"
-                      style={{ 
-                        fontFamily: "var(--font-architects-daughter), 'Architects Daughter', cursive",
-                        fontSize: `${slide2FontSize}px`,
-                        lineHeight: slide2LineSpacing
-                      }}
-                    >
-                      {bullet.split('|').map((line, lineIndex) => (
-                        <span key={lineIndex}>
-                          {line}
-                          {lineIndex < bullet.split('|').length - 1 && <br />}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
+                  <ChecklistItem
+                    key={index}
+                    type="number"
+                    text={bullet}
+                    index={index + 1}
+                    fontSize={slide2FontSize}
+                    lineSpacing={slide2LineSpacing}
+                  />
                 ))}
               </div>
             </div>

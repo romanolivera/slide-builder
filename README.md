@@ -13,6 +13,9 @@ A Next.js application for creating professional slides from Markdown content. Pe
 - **⬇️ Download**: Export individual slides or all slides as high-quality PNG images
 - **📱 Responsive Design**: Works on desktop and mobile devices
 - **⚙️ Settings Panel**: Easy access to theme management and customization
+- **👟 Specialized Templates**: Built-in shoe review template with custom layouts and checklist components
+- **✅ Checklist Components**: Interactive checklist items with different icon types (check, cross, rotate, number)
+- **🎯 Multi-Image Support**: Advanced image positioning and scaling controls for complex layouts
 
 ## 🚀 Getting Started
 
@@ -256,6 +259,28 @@ Next slide content here...
 3. **Theme Customization**: Creating and managing themes
 4. **Downloading Slides**: How to export your presentations
 
+## 👟 Specialized Templates
+
+### Shoe Review Template
+
+The slide builder includes a specialized shoe review template designed for product reviews and comparisons:
+
+#### Template Structure
+1. **Slide 1 - Introduction**: Features centered shoe image, title with line breaks, and pricing visualization
+2. **Slide 2 - Who is this for?**: Checklist with green checkmarks for target audience
+3. **Slide 3 - Who should avoid?**: Checklist with red X marks for users who should avoid
+4. **Slide 4 - Alternatives**: Checklist with rotate icons and support for 2 comparison images
+5. **Slide 5 - Poll for next review**: Numbered list with support for up to 4 product images
+
+#### Template Features
+- **Pricing Visualization**: Automatic dollar sign scales (1-5 $) based on bullet content like "- $$$$"
+- **Checklist Icons**: Different icon types for different slide purposes
+- **Multi-Image Support**: Advanced positioning and scaling controls for multiple product images
+- **Custom Backgrounds**: 5 unique backgrounds specifically designed for the template
+
+#### Usage
+Select the "shoe-review" theme from the theme dropdown to activate the specialized template layouts.
+
 ## ⬇️ Downloading Slides
 
 ### Individual Slides
@@ -276,25 +301,34 @@ slide-builder/
 │   ├── api/
 │   │   ├── upload-image/route.ts      # Content image upload API
 │   │   ├── delete-image/route.ts      # Content image deletion API
-│   │   └── upload-background/route.ts # Background image upload API
+│   │   ├── upload-background/route.ts # Background image upload API
+│   │   └── upload-theme-background/   # Theme background upload API
 │   ├── page.tsx                       # Main application page
 │   └── layout.tsx                     # Root layout
 ├── components/
-│   ├── slide.tsx                      # Slide component with image integration
+│   ├── slide.tsx                      # Main slide component with image integration
 │   ├── image-upload.tsx               # Interactive image upload component
 │   ├── settings.tsx                   # Settings dialog with theme management
 │   ├── theme-editor.tsx               # Theme creation component
 │   ├── theme-selector.tsx             # Theme selection component
 │   ├── instructions.tsx               # Step-by-step instructions dialog
 │   ├── language-switcher.tsx          # Language selection component
-│   └── ui/                            # UI components
+│   ├── templates/
+│   │   └── shoe-review.tsx            # Specialized shoe review template
+│   └── ui/
+│       ├── checklist-item.tsx         # Checklist component with icon types
+│       └── ...                        # Other UI components
 ├── lib/
 │   ├── themes.ts                      # Theme management utilities
 │   └── translations.ts                # Bilingual text content
 ├── public/
-│   ├── bg1.png                       # Default background for first slide
-│   ├── bg2.png                       # Default background for middle slides
-│   ├── bg3.png                       # Default background for last slide
+│   ├── themes/
+│   │   ├── default/                   # Default theme backgrounds
+│   │   ├── modern/                    # Modern theme backgrounds
+│   │   └── shoe-review/               # Shoe review template backgrounds
+│   ├── bg1.png                       # Legacy background files
+│   ├── bg2.png                       
+│   ├── bg3.png                       
 │   └── input.md                      # Default slide content
 └── README.md
 ```

@@ -1,0 +1,25 @@
+{
+  "id": "modern",
+  "name": "Modern",
+  "textColor": "#FFFFFF",
+  "backgrounds": {
+    "first": "/themes/modern/bg1.png",
+    "middle": "/themes/modern/bg2.png",
+    "last": "/themes/modern/bg3.png"
+  },
+  "fonts": {
+    "title": "Montserrat",
+    "subtitle": "Open Sans",
+    "body": "Open Sans"
+  },
+  "layout": {
+    "titleSize": 96,
+    "subtitleSize": 36,
+    "bodySize": 28,
+    "titleSpacing": 32,
+    "contentSpacing": 24,
+    "imagePosition": "center"
+  },
+  "isBuiltIn": true,
+  "createdAt": 0
+}

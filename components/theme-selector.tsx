@@ -80,7 +80,7 @@ export function ThemeSelector({ onThemeChange, currentTheme, language }: ThemeSe
                       <Check size={16} className="text-blue-500" />
                     )}
                   </div>
-                  {theme.id !== 'default' && (
+                  {theme.id !== 'default' && theme.id !== 'alt' && theme.id !== 'shoe-review' && (
                     <Button
                       variant="ghost"
                       size="sm"

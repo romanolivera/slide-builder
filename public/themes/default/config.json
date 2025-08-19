@@ -1,0 +1,25 @@
+{
+  "id": "default",
+  "name": "Default",
+  "textColor": "#000000",
+  "backgrounds": {
+    "first": "/themes/default/bg1.png",
+    "middle": "/themes/default/bg2.png",
+    "last": "/themes/default/bg3.png"
+  },
+  "fonts": {
+    "title": "League Gothic",
+    "subtitle": "Inter",
+    "body": "Inter"
+  },
+  "layout": {
+    "titleSize": 116,
+    "subtitleSize": 42,
+    "bodySize": 32,
+    "titleSpacing": 20,
+    "contentSpacing": 16,
+    "imagePosition": "bottom"
+  },
+  "isBuiltIn": true,
+  "createdAt": 0
+}

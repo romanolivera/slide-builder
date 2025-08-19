@@ -1,0 +1,44 @@
+{
+  "id": "shoe-review",
+  "name": "Shoe Review",
+  "type": "template",
+  "defaultTextColor": "#000000",
+  "fonts": {
+    "title": "League Gothic",
+    "subtitle": "Inter",
+    "body": "Inter"
+  },
+  "slides": [
+    {
+      "key": "intro",
+      "label": "Shoe Intro",
+      "background": "/themes/shoe-review/shoe_review-bg1.png",
+      "textColor": "#FFFFFF",
+      "elements": ["stampText", "shoeName", "priceScale"]
+    },
+    {
+      "key": "for-who",
+      "label": "¿Para quién?",
+      "background": "/themes/shoe-review/shoe_review-bg2.png",
+      "elements": ["title", "checklist", "shoeImage"]
+    },
+    {
+      "key": "not-for-who",
+      "label": "¿Para quién NO?",
+      "background": "/themes/shoe-review/shoe_review-bg3.png",
+      "elements": ["title", "xlist", "shoeImage"]
+    },
+    {
+      "key": "alternatives",
+      "label": "Alternativas",
+      "background": "/themes/shoe-review/shoe_review-bg4.png",
+      "elements": ["title", "alternativesList"]
+    },
+    {
+      "key": "poll",
+      "label": "Elige el siguiente review",
+      "background": "/themes/shoe-review/shoe_review-bg5.png",
+      "elements": ["title", "optionsList"]
+    }
+  ]
+}

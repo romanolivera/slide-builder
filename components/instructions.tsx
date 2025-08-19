@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Badge } from "@/components/ui/badge"
-import { HelpCircle, CheckCircle, Image, Download, Settings, Palette } from "lucide-react"
+import { HelpCircle, CheckCircle, Image, Download, Settings, Palette, Zap } from "lucide-react"
 
 interface InstructionsProps {
   language: 'es' | 'en'
@@ -15,126 +15,148 @@ export function Instructions({ language }: InstructionsProps) {
 
   const content = {
     es: {
-      title: "Cómo usar el Slide Builder",
-      subtitle: "Guía paso a paso para crear presentaciones profesionales",
+      title: "Cómo usar el Shoe Review Template",
+      subtitle: "Guía específica para crear slides de reseñas de zapatillas deportivas",
       steps: [
         {
           title: "1. Escribe tu contenido en Markdown",
           description: "En el panel izquierdo, escribe tu contenido usando Markdown. Cada slide debe empezar con '## Título' y separar slides con '---'.",
-          example: `## Mi primer slide
-Este es el contenido de mi slide
-- Punto 1
-- Punto 2
+          example: `## Adizero Adios | Pro 4
+- $$$$
 
 ---
 
-## Mi segundo slide
-> Una cita importante
-- Más puntos`,
+## Características principales
+- Peso: 180g
+- Drop: 8mm
+- Suela: Carbón`,
           icon: "📝"
         },
         {
-          title: "2. Agrega imágenes a tus slides",
-          description: "Debajo de cada preview de slide, haz clic en el área de imagen para subir una foto. La imagen aparecerá automáticamente en el slide.",
+          title: "2. Sistema de Precio con Escala",
+          description: "Para el primer slide, usa una viñeta con solo símbolos '$' para indicar el nivel de precio (1-5). Los símbolos se mostrarán en verde, el resto en gris.",
+          example: `## Adizero Adios | Pro 4
+- $$$$  ← Esto mostrará 4 símbolos verdes y 1 gris`,
+          tips: [
+            "Escribe solo símbolos '$' (1-5 máximo)",
+            "Los símbolos se renderizan como escala visual",
+            "Perfecto para indicar precio relativo sin números exactos"
+          ],
+          icon: "💰"
+        },
+        {
+          title: "3. Agrega la imagen de la zapatilla",
+          description: "Debajo del preview del slide, haz clic en el área de imagen para subir la foto de la zapatilla. Aparecerá centrada en el slide.",
           tips: [
             "Acepta cualquier formato de imagen (JPG, PNG, WebP, etc.)",
             "Se convierte automáticamente a PNG",
-            "Se redimensiona para ajustarse al slide"
+            "Se ajusta automáticamente al área de la zapatilla"
           ],
           icon: "🖼️"
         },
         {
-          title: "3. Personaliza el tema",
-          description: "Haz clic en 'Settings' (⚙️) en la esquina superior derecha para personalizar colores y fondos.",
+          title: "4. Personaliza la posición y tamaño",
+          description: "Usa las herramientas de posicionamiento para ajustar la zapatilla, título y escala de precio. También puedes cambiar el tamaño de fuente y espaciado del título.",
           tips: [
-            "Crea temas personalizados con 3 fondos diferentes",
-            "Cambia el color del texto",
-            "Guarda y reutiliza tus temas favoritos"
+            "Herramienta de posición: mueve elementos arriba/abajo",
+            "Control de zoom: ajusta el tamaño de la imagen",
+            "Editor de fuente: cambia tamaño y espaciado del título"
           ],
-          icon: "🎨"
+          icon: "⚙️"
         },
         {
-          title: "4. Descarga tus slides",
-          description: "Descarga slides individuales o todos a la vez usando los botones de descarga.",
+          title: "5. Descarga tu slide",
+          description: "Usa el botón de descarga para exportar tu slide como PNG de alta calidad.",
           tips: [
-            "Cada slide se descarga como PNG de alta calidad",
-            "Usa 'Download All' para descargar toda la presentación",
-            "Los slides mantienen la proporción 1080x1350px"
+            "Se descarga como PNG de 1080x1350px",
+            "Mantiene todas las personalizaciones",
+            "Perfecto para redes sociales y presentaciones"
           ],
           icon: "⬇️"
         }
       ],
       tips: {
-        title: "Consejos útiles:",
+        title: "Consejos específicos para Shoe Review:",
         items: [
-          "Usa '---' para separar slides",
-          "Cada slide debe empezar con '## Título'",
-          "Usa '- ' para crear listas con viñetas",
-          "Usa '> ' para crear citas destacadas",
-          "Las imágenes son temporales (se pierden al recargar)",
-          "Los temas se guardan en tu navegador"
+          "El primer slide es el principal (imagen + título + precio)",
+          "Usa '|' en el título para saltos de línea automáticos",
+          "La escala de precio va de 1 a 5 símbolos '$'",
+          "Las imágenes se centran automáticamente",
+          "Los fondos cambian según el número de slide",
+          "Perfecto para Instagram, TikTok y reviews"
         ]
       }
     },
     en: {
-      title: "How to use the Slide Builder",
-      subtitle: "Step-by-step guide to create professional presentations",
+      title: "How to use the Shoe Review Template",
+      subtitle: "Specific guide for creating athletic shoe review slides",
       steps: [
         {
           title: "1. Write your content in Markdown",
           description: "In the left panel, write your content using Markdown. Each slide should start with '## Title' and separate slides with '---'.",
-          example: `## My first slide
-This is my slide content
-- Point 1
-- Point 2
+          example: `## Adizero Adios | Pro 4
+- $$$$
 
 ---
 
-## My second slide
-> An important quote
-- More points`,
+## Key Features
+- Weight: 180g
+- Drop: 8mm
+- Sole: Carbon`,
           icon: "📝"
         },
         {
-          title: "2. Add images to your slides",
-          description: "Below each slide preview, click on the image area to upload a photo. The image will automatically appear in the slide.",
+          title: "2. Price Scale System",
+          description: "For the first slide, use a bullet with only '$' symbols to indicate the price level (1-5). The symbols will show in green, the rest in gray.",
+          example: `## Adizero Adios | Pro 4
+- $$$$  ← This will show 4 green symbols and 1 gray`,
+          tips: [
+            "Write only '$' symbols (1-5 maximum)",
+            "Symbols render as visual scale",
+            "Perfect for indicating relative price without exact numbers"
+          ],
+          icon: "💰"
+        },
+        {
+          title: "3. Add the shoe image",
+          description: "Below the slide preview, click on the image area to upload the shoe photo. It will appear centered in the slide.",
           tips: [
             "Accepts any image format (JPG, PNG, WebP, etc.)",
             "Automatically converts to PNG",
-            "Resizes to fit the slide"
+            "Automatically fits the shoe area"
           ],
           icon: "🖼️"
         },
         {
-          title: "3. Customize the theme",
-          description: "Click on 'Settings' (⚙️) in the top right corner to customize colors and backgrounds.",
+          title: "4. Customize position and size",
+          description: "Use the positioning tools to adjust the shoe, title, and price scale. You can also change the title font size and line spacing.",
           tips: [
-            "Create custom themes with 3 different backgrounds",
-            "Change text color",
-            "Save and reuse your favorite themes"
+            "Position tool: move elements up/down",
+            "Zoom control: adjust image size",
+            "Font editor: change title size and spacing"
           ],
-          icon: "🎨"
+          icon: "⚙️"
         },
         {
-          title: "4. Download your slides",
-          description: "Download individual slides or all at once using the download buttons.",
+          title: "5. Download your slide",
+          description: "Use the download button to export your slide as a high-quality PNG.",
           tips: [
-            "Each slide downloads as high-quality PNG",
-            "Use 'Download All' to download the entire presentation",
-            "Slides maintain 1080x1350px proportion"
+            "Downloads as 1080x1350px PNG",
+            "Maintains all customizations",
+            "Perfect for social media and presentations"
           ],
           icon: "⬇️"
         }
       ],
       tips: {
-        title: "Useful tips:",
+        title: "Shoe Review specific tips:",
         items: [
-          "Use '---' to separate slides",
-          "Each slide should start with '## Title'",
-          "Use '- ' to create bullet lists",
-          "Use '> ' to create highlighted quotes",
-          "Images are temporary (lost on reload)",
-          "Themes are saved in your browser"
+          "First slide is the main one (image + title + price)",
+          "Use '|' in title for automatic line breaks",
+          "Price scale goes from 1 to 5 '$' symbols",
+          "Images center automatically",
+          "Backgrounds change based on slide number",
+          "Perfect for Instagram, TikTok and reviews"
         ]
       }
     }
@@ -157,7 +179,7 @@ This is my slide content
       <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <HelpCircle size={20} />
+            <Zap size={20} />
             {currentContent.title}
           </DialogTitle>
           <p className="text-sm text-gray-600">{currentContent.subtitle}</p>
